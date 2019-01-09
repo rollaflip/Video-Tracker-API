@@ -13,17 +13,13 @@ app.get('/api/videos', (req, res, next) => {
 
 
 const port  = process.env.PORT || 3000
-
 app.listen(port, ()=> console.log(`listening on port ${port}...`))
 
 
 app.post('/', (req, res, next) => {
-
 })
 app.put('/', (req, res, next) => {
-
 })
 app.delete('/', (req, res, next) => {
-
 })
 
