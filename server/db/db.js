@@ -10,3 +10,7 @@ const db = new Sequelize(
   }
 )
 module.exports = db
+
+
+
+//http://ianvid.com/api/videos       possible end point for us
