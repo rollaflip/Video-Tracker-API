@@ -4,9 +4,9 @@ USE VideoTracker;
 
 CREATE TABLE IF NOT EXISTS `Videos` (
   `id` int(10) NOT NULL auto_increment,
-  `name` carchar(255),
-  `brand` carchar(255),
-  `publisheddate` date,
-  'viewcount' numeric(9,2),
+  `name` carchar(255) NOT NULL,
+  `brand` carchar(255)NOT NULL,
+  `publisheddate` date NOT NULL,
+  'viewcount' int(10) DEFAULT 0,
   PRIMARY KEY(`id`)
 );
