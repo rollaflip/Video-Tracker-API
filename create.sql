@@ -7,6 +7,6 @@ CREATE TABLE IF NOT EXISTS `Videos` (
   `name` carchar(255) NOT NULL,
   `brand` carchar(255)NOT NULL,
   `published` date NOT NULL,
-  'viewcount' int(10) DEFAULT 0,
+  'viewCount' int(10) DEFAULT 0,
   PRIMARY KEY(`id`)
 );
