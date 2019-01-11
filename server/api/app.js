@@ -1,12 +1,11 @@
+const Joi = require('joi');
 const express = require('express');
 const app = express();
-// const Joi = require('joi');
-
-
+const { Video, View } = require('../db/models/video');
 
 app.use(express.json());
 
-const videos = [
+const videosArr = [
   {
     id: 1,
     name: 'vid1',
@@ -29,58 +28,62 @@ const videos = [
     viewCount: 5,
   },
 ];
-app.get('/', (req, res, next) => {
-  res.send('get req hit');
-});
+// app.get('/', (req, res, next) => {
+//   res.send('get req hit');
+// });
 
-app.get('/api/videos', (req, res, next) => {
-  res.send(videos);
+app.get('/api/videos', async (req, res, next) => {
+  try {
+    const videos = await Video.findAll();
+    res.send(videos);
+  } catch (err) {
+    next(err);
+  }
 });
 
 //app/videos/`id`
-app.get('/api/videos/:id', (req, res, next) => {
-  const video = videos.find(vid => vid.id === parseInt(req.params.id));
-  if (!video) res.status(404).send('The video with the given ID was not found');
-  else res.send(video);
+app.get('/api/videos/:id', async (req, res, next) => {
+  try {
+    const video = await Video.findById(req.params.id);
+    // if (!video) res.status(404).send('The video with the given ID was not found');
+    res.send(video);
+  } catch (err) {
+    next(err);
+  }
 });
 
 //create vid
-app.post('/api/videos', (req, res, next) => {
-  const schema = {
-    name: Joi.string().min(1).required(),
-    brand: Joi.string().min(1).required(),
-    published: Joi.string().min(1).required(),
-  };
-
-  const result = Joi.validate(req.body, schema);
-
-  if (result.error) {
-    //400 bad request
-    res.status(400).send(result.error.details[0].message);
-    return;
+app.post('/api/videos', async(req, res, next) => {
+  try {
+    const newVideo = await Video.create(req.body);
+    if (newVideo) {
+      const video = {
+        id: videosArr.length + 1, //dummy db id for now
+        name: req.body.name,
+      };
+      videosArr.push(video); //to dummy db
+      res.send(newVideo);
+    } else res.status(400).send('invalid information in body of request');
+  } catch (err) {
+    next(err);
   }
-  const video = {
-    id: videos.length + 1, //dummy db id for now
-    name: req.body.name,
-  };
-  videos.push(video); //to dummy db
-  res.send(video);
 });
 
-//add a view to video by id
-app.put('/api/vidoes/:id', (req, res, next) => {
+app.put('/api/vidoes/:id', async(req, res, next) => {
+
+  const [, affectedRows] = await Video.update(req.body, {
+    where: {
+      id: req.params.id
+    },
+    returning: true
+  }
+
   //look up video, if not exist, return 404
-  const video = videos.find(vid => vid.id === parseInt(req.params.id));
+  const video = Video.findById(vid => vid.id === parseInt(req.params.id));
   if (!video) res.status(404).send('The video with the given ID was not found');
   //validate
 
-  const schema = {
-    name: Joi.string().min(1).required(),
-    brand: Joi.string().min(1).required(),
-    published: Joi.string().min(1).required(),
-  };
-
-  const result = Joi.validate(req.body, schema);
+  const result = Joi.validate(req.body);
   //if invalidd, return 400
   if (result.error) {
     //400 bad request
@@ -88,11 +91,10 @@ app.put('/api/vidoes/:id', (req, res, next) => {
     return;
   }
   //update video
-  video.name = req.body.name
+  video.name = req.body.name;
   //return updated video
-  res.send(video)
+  res.send(video);
 });
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`listening on port ${port}...`));
-

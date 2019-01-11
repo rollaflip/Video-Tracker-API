@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const sequelize = new Sequelize('database', 'username', 'password', {
   host: 'localhost',
-  dialect: 'mysql'|'sqlite'|'postgres'|'mssql',
+  dialect: 'mysql'||'sqlite'||'postgres'||'mssql',
 
   pool: {
     max: 5,
@@ -18,7 +18,6 @@ const sequelize = new Sequelize('database', 'username', 'password', {
 });
 
 module.exports = sequelize
-
 
 
 //http://ianvid.com/api/videos       possible end point for us

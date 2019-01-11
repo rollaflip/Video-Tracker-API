@@ -1,11 +1,12 @@
 
 const Sequelize = require('sequelize')
-const db = require('../sequelize')
+const db = require('../db')
 
 const Video = db.define('video', {
   id: {
-    type: Sequelize.STRING,
-    allowNull: false
+    primaryKey: true,
+    type: Sequelize.INTEGER,
+    allowNull: false,
   },
   name: {
     type: Sequelize.STRING,
@@ -21,10 +22,11 @@ const Video = db.define('video', {
   },
 })
 
-const ViewCount = db.define('video', {
+const View = db.define('video', {
   id: {
-    type: Sequelize.STRING,
-    allowNull: false
+    primaryKey: true,
+    type: Sequelize.INTEGER,
+    allowNull: false,
   },
   viewDate: {
     type: Sequelize.STRING,
@@ -37,4 +39,8 @@ const ViewCount = db.define('video', {
 })
 
 
-module.exports = (Video, ViewCount)
+View.belongsTo(Video)
+Video.hasMany(View)
+
+module.exports = {Video, View}
+

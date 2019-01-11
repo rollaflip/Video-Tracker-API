@@ -1,6 +1,8 @@
+const Joi = require('joi');
 const express = require('express');
 const app = express();
-const Joi = require('joi');
+const { Video, View } = require('../db/models/video');
+
 
 app.use(express.json());
 
@@ -27,70 +29,120 @@ const videos = [
     viewCount: 5,
   },
 ];
+//validate data w/ Joi function
+const validateVideo = video => {
+  const schema = {
+    name: Joi.string()
+      .min(1)
+      .required(),
+    // brand: Joi.string()
+    //   .min(1)
+    //   .required(),
+    // published: Joi.string()
+    //   .min(1)
+    //   .required(),
+  };
+  return Joi.validate(video, schema);
+};
+
 app.get('/', (req, res, next) => {
   res.send('get req hit');
 });
 
-app.get('/api/videos', (req, res, next) => {
-  res.send(videos);
+app.get('/api/videos', async(req, res, next) => {
+  try{
+    // const allVideos = await Videos.findAll()
+    // res.send(allVideos);
+    res.send(videos)
+  } catch(err){
+    next(err)
+  }
+
 });
 
-//app/videos/`id`
-app.get('/api/videos/:id', (req, res, next) => {
-  const video = videos.find(vid => vid.id === parseInt(req.params.id));
-  if (!video) res.status(404).send('The video with the given ID was not found');
-  else res.send(video);
+//get video by id
+app.get('/api/videos/:id', async (req, res, next) => {
+  try{
+    const video = videos.find(vid => vid.id === parseInt(req.params.id,10));
+    // const video = await Video.findById(req.params.id);
+    if (!video) return res.status(404).send('The video with the given ID was not found');
+    res.send(video);
+
+  }catch(err){
+    next(err)
+  }
 });
+
 
 //create vid
 app.post('/api/videos', (req, res, next) => {
-  const schema = {
-    name: Joi.string().min(1).required(),
-    brand: Joi.string().min(1).required(),
-    published: Joi.string().min(1).required(),
-  };
+  try{
+    const { error } = validateVideo(req.body);
+    if (error) return res.status(400).send(error.details[0].message);
 
-  const result = Joi.validate(req.body, schema);
+    const newVideo = {
+      id: videos.length + 1, //dummy db id for now
+      name: req.body.name,
+    };
+    videos.push(newVideo); //to dummy db
 
-  if (result.error) {
-    //400 bad request
-    res.status(400).send(result.error.details[0].message);
-    return;
-  }
-  const video = {
-    id: videos.length + 1, //dummy db id for now
-    name: req.body.name,
-  };
-  videos.push(video); //to dummy db
-  res.send(video);
+    // const newVideo = await Video.create(req.body);
+    // if (!newVideo)  return res.status(500).send('Server or DB error')
+
+    res.send(newVideo);
+
+  }catch(err){ next(err)}
 });
 
-//add a view to video by id
-app.put('/api/vidoes/:id', (req, res, next) => {
-  //look up video, if not exist, return 404
-  const video = videos.find(vid => vid.id === parseInt(req.params.id));
-  if (!video) res.status(404).send('The video with the given ID was not found');
-  //validate
+app.put('/api/videos/:id', (req, res, next) => {
+  try{
+    const video = videos.find(vid => vid.id === parseInt(req.params.id,10));
+    if (!video) return res.status(404).send('A video with the given ID was not found');
 
-  const schema = {
-    name: Joi.string().min(1).required(),
-    brand: Joi.string().min(1).required(),
-    published: Joi.string().min(1).required(),
-  };
+    const { error } = validateVideo(req.body);
+    if (error) return res.status(400).send(error.details[0].message);
 
-  const result = Joi.validate(req.body, schema);
-  //if invalidd, return 400
-  if (result.error) {
-    //400 bad request
-    res.status(400).send(result.error.details[0].message);
-    return;
+    video.name = req.body.name;
+
+    // const [, affectedRows] = await Video.update(req.body, {
+    //   where: {
+    //     id: req.params.id
+    //   },
+    //   returning: true
+    // }
+
+    res.send(video);
+
+  }catch(err){
+    next(err)
   }
-  //update video
-  video.name = req.body.name
-  //return updated video
-  res.send(video)
+});
+
+app.delete('/api/videos/:id', (req, res, next) => {
+  try{
+
+    const video = videos.find(vid => vid.id === parseInt(req.params.id,10));
+    if (!video) return res.status(404).send('The video with the given ID was not found');
+
+    const index = videos.indexOf(video); //finding in dummy db
+    videos.splice(index, 1); // deleting from dummy db
+
+    // const deletedAdress = await Address.destroy({
+    //   where: {
+    //     id: req.params.id
+    //   }
+    // })
+    // if (deletedAdress) {
+    //   res.sendStatus(204).send('video deleted')
+    // }
+
+
+    res.send(video);
+
+  } catch(err){
+    console.log(err)
+  }
 });
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`listening on port ${port}...`));
-
