@@ -48,7 +48,7 @@ const validateVideo = video => {
 app.get('/', (req, res, next) => {
   res.send('get req hit');
 });
-
+//get all videos
 app.get('/api/videos', async(req, res, next) => {
   try{
     // const allVideos = await Videos.findAll()
@@ -136,11 +136,11 @@ app.delete('/api/videos/:id', (req, res, next) => {
     //   res.sendStatus(204).send('video deleted')
     // }
 
-
-    res.send(video);
+    let addMessage = `${JSON.stringify(video)} ITEM DELETED`
+    res.send(addMessage);
 
   } catch(err){
-    console.log(err)
+    res.send(err)
   }
 });
 
