@@ -19,7 +19,7 @@ USE VideoTracker;
 
 -- Table Definition ----------------------------------------------
 
-CREATE TABLE IF NOT EXISTS "Video" (
+CREATE TABLE IF NOT EXISTS "Videos" (
    id integer DEFAULT nextval('"Video_id_seq"'::regclass) PRIMARY KEY,
     name text NOT NULL,
     brand text NOT NULL,
@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS "Video" (
 CREATE UNIQUE INDEX "Video_pkey" ON "Video"(id int4_ops);
 -- Table Definition ----------------------------------------------
 
-CREATE TABLE "View" (
+CREATE TABLE "Views" (
     id integer DEFAULT nextval('"View_id_seq"'::regclass) PRIMARY KEY,
     "viewDate" integer NOT NULL,
     "videoID" integer NOT NULL REFERENCES "Video"(id)

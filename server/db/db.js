@@ -32,8 +32,9 @@ const databaseName = 'VideoTracker'
 const sequelize = new Sequelize(
  process.env.DATABASE_URL || `postgres://localhost:5432/${databaseName}`,
  {
+
   logging: false
  }
 )
-sequelize.sync({ force: true })
+// sequelize.sync({ force: true })
 module.exports = sequelize
