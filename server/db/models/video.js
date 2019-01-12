@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const db = require('../db');
 
-const Video = db.define('video', {
+const Video = db.define('Video', {
   id: {
     primaryKey: true,
     type: Sequelize.INTEGER,
@@ -21,7 +21,7 @@ const Video = db.define('video', {
   },
 });
 
-const View = db.define('video', {
+const View = db.define('View', {
   id: {
     primaryKey: true,
     type: Sequelize.INTEGER,
@@ -39,5 +39,6 @@ const View = db.define('video', {
 
 View.belongsTo(Video);
 Video.hasMany(View);
+
 
 module.exports = { Video, View };

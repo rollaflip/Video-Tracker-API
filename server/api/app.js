@@ -74,7 +74,7 @@ app.get('/', (req, res, next) => {
 //get all videos
 app.get('/api/videos', async (req, res, next) => {
   try {
-    const allVideos = await Video.findAll()
+    const allVideos = await Video.findAll();
     res.send(allVideos);
     // res.send(videos);
   } catch (err) {
@@ -82,29 +82,32 @@ app.get('/api/videos', async (req, res, next) => {
   }
 });
 
-
 //get video by id
 app.get('/api/videos/:id', async (req, res, next) => {
   try {
     const video = videos.find(vid => vid.id === parseInt(req.params.id, 10));
-    const countArr = views.filter(view =>view.videoID === parseInt(req.params.id, 10))
-    video.count = countArr.length
+    const countArr = views.filter(
+      view => view.videoID === parseInt(req.params.id, 10)
+    );
+    video.count = countArr.length;
 
     // const video = await View.findById(req.params.id);
-    if (!video) return res.status(404).send('The video with the given ID was not found');
-    if (!countArr) return res.status(404).send('No views for the given VideoID were found');
+    if (!video)
+      return res.status(404).send('The video with the given ID was not found');
+    if (!countArr)
+      return res.status(404).send('No views for the given VideoID were found');
 
     // const count = find all views with view.id return count and add to json under 'count'
     //const count = Views.findAndCountAll()
     // const view = videos.find(vid => vid.id === parseInt(req.params.id, 10));
     // const viewsById = await View.findAllById(req.params.id);
     //View.findAndCountAll({
-//     where: {
-//        videoID: req.params.id
-//     }
-//  })
-      let duckduck = req.params
-    res.send({message: 'Video report recieved.', video});
+    //     where: {
+    //        videoID: req.params.id
+    //     }
+    //  })
+    let duckduck = req.params;
+    res.send({ message: 'Video report recieved.', video });
   } catch (err) {
     next(err);
   }
@@ -123,8 +126,8 @@ app.post('/api/videos', async (req, res, next) => {
     // videos.push(newVideo); //to dummy db
 
     const newVideo = await Video.create(req.body);
-    if (!newVideo)  return res.status(500).send('Server or DB error')
-    res.send({message: 'Video successfully created.', newVideo});
+    if (!newVideo) return res.status(500).send('Server or DB error');
+    res.send({ message: 'Video successfully created.', newVideo });
   } catch (err) {
     next(err);
   }
@@ -145,13 +148,13 @@ app.post('/api/views', (req, res, next) => {
     // const newView = await Video.create(req.body);
     // if (!newView)  return res.status(500).send('Server or DB error')
 
-   // const [, affectedRows] = await Video.update(req.body, {
-      //   where: {
-      //     videoID: req.params.id
-      //   },
-      //   returning: true
-      // }
-      res.send({message: 'Video successfully tracked.', newView});
+    // const [, affectedRows] = await Video.update(req.body, {
+    //   where: {
+    //     videoID: req.params.id
+    //   },
+    //   returning: true
+    // }
+    res.send({ message: 'Video successfully tracked.', newView });
   } catch (err) {
     next(err);
   }
@@ -160,4 +163,4 @@ app.post('/api/views', (req, res, next) => {
 const port = process.env.PORT || 3000;
 // app.listen(port, () => console.log(`listening on port ${port}...`));
 
-app.listen(port, ()=> console.log(`listening on ${port}`))
+app.listen(port, () => console.log(`listening on ${port}`));

@@ -35,5 +35,5 @@ const sequelize = new Sequelize(
   logging: false
  }
 )
-
+sequelize.sync({ force: true })
 module.exports = sequelize
