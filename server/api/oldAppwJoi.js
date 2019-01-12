@@ -94,6 +94,7 @@ app.post('/api/videos', (req, res, next) => {
   }catch(err){ next(err)}
 });
 
+//edit video
 app.put('/api/videos/:id', (req, res, next) => {
   try{
     const video = videos.find(vid => vid.id === parseInt(req.params.id,10));

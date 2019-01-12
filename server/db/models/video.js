@@ -1,26 +1,25 @@
-
-const Sequelize = require('sequelize')
-const db = require('../db')
+const Sequelize = require('sequelize');
+const db = require('../db');
 
 const Video = db.define('video', {
   id: {
     primaryKey: true,
     type: Sequelize.INTEGER,
-    allowNull: false,
+    // allowNull: false,
   },
   name: {
-    type: Sequelize.STRING,
-    allowNull: false
+    type: Sequelize.TEXT,
+    allowNull: false,
   },
   brand: {
-    type: Sequelize.STRING,
-    allowNull: false
+    type: Sequelize.TEXT,
+    allowNull: false,
   },
   published: {
-    type: Sequelize.STRING,
-    allowNull: false
+    type: Sequelize.INTEGER,
+    allowNull: false,
   },
-})
+});
 
 const View = db.define('video', {
   id: {
@@ -29,18 +28,16 @@ const View = db.define('video', {
     allowNull: false,
   },
   viewDate: {
-    type: Sequelize.STRING,
-    allowNull: false
+    type: Sequelize.INTEGER,
+    allowNull: false,
   },
   videoID: {
-    type: Sequelize.STRING,
-    allowNull: false
+    type: Sequelize.INTEGER,
+    allowNull: false,
   },
-})
+});
 
+View.belongsTo(Video);
+Video.hasMany(View);
 
-View.belongsTo(Video)
-Video.hasMany(View)
-
-module.exports = {Video, View}
-
+module.exports = { Video, View };
