@@ -4,8 +4,8 @@
 
 After you have Video Tracker API installed and running, you are ready to go!
 
-API end point for videos: http://localhost:3000/api/videos
-API end pont for views: http://localhost:3000/api/views
+API endpoint for videos: http://localhost:3000/api/videos
+API endpoint for views: http://localhost:3000/api/views
 
 Features include:
 - Create Video: Adds new video to DB
@@ -55,7 +55,7 @@ Required Parameters
 
 A get request for a video report returns the following format:
 {
-    "message": "Video report recieved.",
+    "message": "Video report received.",
     "videoReport": {
         "name": "vid1",
         "brand": "Thrillist",

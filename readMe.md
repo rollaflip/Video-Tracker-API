@@ -36,7 +36,7 @@ Change the connection string to fit your needs
 $ nodemon app.js
 ```
 
-### See API.md for futher instructions
+### See API.md for further instructions
 ### Enjoy!
 
 ## Built With:
