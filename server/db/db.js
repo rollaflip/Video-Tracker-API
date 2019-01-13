@@ -1,40 +1,29 @@
-// const Sequelize = require('sequelize');
-// const sequelize = new Sequelize('database', 'username', 'password', {
-//   host: 'localhost',
-//   dialect: 'mysql'||'sqlite'||'postgres'||'mssql',
+const Sequelize = require('sequelize');
 
-//   pool: {
-//     max: 5,
-//     min: 0,
-//     acquire: 30000,
-//     idle: 10000
-//   },
+//Change to your database name
+const dbName = 'VideoTracker';
 
-//   // SQLite only
-//   storage: 'path/to/database.sqlite',
+// Change to your dialect
+// Options include: 'mysql'||'sqlite'||'postgres'||'mssql',
+const dialect = 'postgres';
+// if using SQLite, add the following after 'pool' as a new Sequelize parameter
+// storage: 'path/to/database.sqlite'
 
-//   // http://docs.sequelizejs.com/manual/tutorial/querying.html#operators
-//   operatorsAliases: false
-// });
+//Change host to your database location
+const host = 'localhost:5432';
 
-// let db = 'postgres://localhost:5432/VideoTracker'
-// const sequelize = new Sequelize({
-//   database: 'VideoTracker',
-//   username: 'Yen',
-//   password: null,
-//   dialect: 'postgres'
-// });
-const Sequelize = require('sequelize')
-const pkg = require('../../package.json')
+const connection = `${dialect}://${host}/${dbName}`;
+// if you require a user and password change connection to the following format
+// const connection = `${dialect}://user:pass@example.com:5432/${dbName}`
 
-// const databaseName = pkg.name + (process.env.NODE_ENV === 'test' ? '-test' : '')
-const databaseName = 'VideoTracker'
-const sequelize = new Sequelize(
- process.env.DATABASE_URL || `postgres://localhost:5432/${databaseName}`,
- {
-
-  logging: false
- }
-)
-// sequelize.sync({ force: true })
-module.exports = sequelize
+const sequelize = new Sequelize(process.env.DATABASE_URL || connection, {
+  logging: false,
+  operatorsAliases: false,
+  pool: {
+    max: 5,
+    min: 0,
+    acquire: 30000,
+    idle: 10000
+  },
+});
+module.exports = sequelize;

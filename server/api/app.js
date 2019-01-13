@@ -5,7 +5,7 @@ const { Video, View } = require('../db/models/video');
 
 app.use(express.json());
 
-//validate video w/ Joi function
+//Validate video req.body w/ Joi function
 const validateVideo = video => {
   const schema = {
     name: Joi.string()
@@ -21,7 +21,7 @@ const validateVideo = video => {
   return Joi.validate(video, schema);
 };
 
-//validate view
+//Validate req.body view
 const validateView = view => {
   const schema = {
     videoID: Joi.number()
@@ -30,6 +30,11 @@ const validateView = view => {
   };
   return Joi.validate(view, schema);
 };
+
+app.get('/api/videos', async (req, res, next) => {
+  const videos = await Video.findAll();
+  res.send(videos);
+});
 
 //Create video
 app.post('/api/videos', async (req, res, next) => {
@@ -52,7 +57,10 @@ app.post('/api/views', async (req, res, next) => {
     const { error } = validateView(req.body);
     if (error) return res.status(400).send(error.details[0].message);
 
-    req.body.date = new Date().toISOString().slice(0, 10).replace(/-/g, "")
+    req.body.date = new Date()
+      .toISOString()
+      .slice(0, 10)
+      .replace(/-/g, '');
 
     const newView = await View.create(req.body);
     if (!newView) return res.status(500).send('Server or DB error');
@@ -66,7 +74,7 @@ app.post('/api/views', async (req, res, next) => {
 //Get video report by id
 app.get('/api/videos/:id', async (req, res, next) => {
   try {
-    const video = await View.findById(req.params.id);
+    const video = await Video.findByPk(req.params.id);
     if (!video)
       return res.status(404).send('The video with the given ID was not found');
 
@@ -74,15 +82,19 @@ app.get('/api/videos/:id', async (req, res, next) => {
     if (!count)
       return res.status(404).send('No views for the given videoID were found');
 
-    video.dataValues.count = count;
+    const videoReport = {
+      name: video.dataValues.name,
+      brand: video.dataValues.brand,
+      published: video.dataValues.published,
+      count: count,
+    };
+    // video.dataValues.count = count;
 
-    res.send({ message: 'Video report recieved.', video });
+    res.send({ message: 'Video report recieved.', videoReport });
   } catch (err) {
     next(err);
   }
 });
 
 const port = process.env.PORT || 3000;
-// app.listen(port, () => console.log(`listening on port ${port}...`));
-
 app.listen(port, () => console.log(`listening on ${port}`));
