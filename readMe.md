@@ -33,12 +33,11 @@ $ nodemon app.js
 ### Enjoy!
 
 ## Built With:
-- Sequelize for SQL queries
 - JavaScript ES6
 - Object schema validation via [Joy](https://github.com/hapijs/joi)
 - Queries via [Sequelize](http://docs.sequelizejs.com/manual/installation/getting-started.html)
 - Routes Tested using Postman
-- SQL Db
+- postgreSQL Db
 
 ## Authors
 
