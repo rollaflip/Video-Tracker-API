@@ -15,7 +15,8 @@ const validateVideo = video => {
       .min(1)
       .required(),
     published: Joi.number()
-      .min(1)
+      .min(8)
+      .max(8)
       .required(),
   };
   return Joi.validate(video, schema);

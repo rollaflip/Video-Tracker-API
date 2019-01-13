@@ -1,6 +1,13 @@
 # Video Tracker API
 #### By Ian Knepper
 
+Video Tracker API is an in-house video analytics system built as a microservice with a relational database backend. Hook up your SQL Database and keep track of how many times your videos are watched.
+
+Features include:
+- Create Video: Adds new video to DB
+- Track Video View: Adds view to DB
+- Get Video Report: Returns info on a video including view count
+
 ## Installation
 
 - Install dependencies via npm
