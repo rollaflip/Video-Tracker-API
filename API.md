@@ -12,7 +12,7 @@ Features include:
 - Track Video View: Adds view to DB
 - Get Video Report: Returns info on a video including view count
 
-# Create a new video:
+## Create a new video:
 Required Parameters
 - name: video name. MUST be string
 - brand: brand that owns this video. MUST be string
@@ -35,7 +35,7 @@ A post request for creating a new video returns the following format:
     }
 }
 
-# Track a video view:
+## Track a video view:
 Required Parameters
 - videoID: video ID of video watched. MUST be integer
 
@@ -49,7 +49,7 @@ A post request for a view returns the following format:
     }
 }
 
-# Get a report of video views:
+## Get a report of video views:
 Required Parameters
 - id: ID of video requested. MUST be integer
 
