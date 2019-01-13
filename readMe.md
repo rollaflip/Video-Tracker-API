@@ -14,17 +14,17 @@ $ npm install --save mysql2
 $ npm install --save sqlite3
 $ npm install --save tedious // MSSQL
 ```
-# Create your DB
+## Create your DB
 Create your db using create.sql
 
-# Navigate to /server/db/db.js
+## Navigate to /server/db/db.js
 Change the connection string to fit your needs
 * More directions in comments in db.js
 - dbName
 - dialect
 - host
 
-#Run with
+## Run with
 ```
 $ nodemon app.js
 ```
