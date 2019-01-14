@@ -30,8 +30,9 @@ $ npm install --save tedious // MSSQL
 
 ## Create your DB
 Create your db using
-- create_mysql.sql  for mySQL or msSQL
 - create_postgresql.sql  for postgreSQL
+- create_mysql.sql  for mySQL
+- create_mssql.sql for MS SQL
 
 ## Navigate to /server/db/db.js
 Change the connection string to fit your needs
