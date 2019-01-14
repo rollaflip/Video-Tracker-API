@@ -19,7 +19,6 @@ const View = db.define(
   {
     id: { primaryKey: true, type: Sequelize.INTEGER, autoIncrement: true },
     videoID: { type: Sequelize.INTEGER, allowNull: false, notEmpty: true },
-    // createdAt: {type: Sequelize.DATE}
   },
   {
     timestamps: true,
