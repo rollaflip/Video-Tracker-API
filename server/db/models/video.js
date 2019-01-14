@@ -7,7 +7,7 @@ const Video = db.define(
     id: { primaryKey: true, type: Sequelize.INTEGER, autoIncrement: true },
     name: { type: Sequelize.TEXT, allowNull: false, notEmpty: true },
     brand: { type: Sequelize.TEXT, allowNull: false, notEmpty: true },
-    published: { type: Sequelize.INTEGER, allowNull: false, notEmpty: true },
+    published: { type: Sequelize.DATE, allowNull: false, notEmpty: true },
   },
   {
     timestamps: false,
@@ -18,11 +18,11 @@ const View = db.define(
   'View',
   {
     id: { primaryKey: true, type: Sequelize.INTEGER, autoIncrement: true },
-    date: { type: Sequelize.INTEGER, allowNull: false },
     videoID: { type: Sequelize.INTEGER, allowNull: false, notEmpty: true },
+    // createdAt: {type: Sequelize.DATE}
   },
   {
-    timestamps: false,
+    timestamps: true,
   }
 );
 

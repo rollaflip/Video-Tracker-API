@@ -12,8 +12,14 @@ Features include:
 
 - Install dependencies via npm
 ```
-$npm install
+$ npm install
 ```
+
+- Install nodemon
+```
+$ npm install nodemon
+```
+
 - And one of the following, depending on your database:
 ```
 $ npm install --save pg pg-hstore
@@ -21,8 +27,11 @@ $ npm install --save mysql2
 $ npm install --save sqlite3
 $ npm install --save tedious // MSSQL
 ```
+
 ## Create your DB
-Create your db using create.sql
+Create your db using
+- create_mysql.sql  for mySQL or msSQL
+- create_postgresql.sql  for postgreSQL
 
 ## Navigate to /server/db/db.js
 Change the connection string to fit your needs
@@ -41,7 +50,7 @@ $ nodemon app.js
 
 ## Built With:
 - JavaScript ES6
-- Object schema validation via [Joy](https://github.com/hapijs/joi)
+- Object schema validation via [Joi](https://github.com/hapijs/joi)
 - Queries via [Sequelize](http://docs.sequelizejs.com/manual/installation/getting-started.html)
 - Routes Tested using Postman
 - postgreSQL Db

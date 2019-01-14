@@ -2,6 +2,7 @@ const Joi = require('joi');
 const express = require('express');
 const app = express();
 const { Video, View } = require('../db/models/video');
+const Sequelize = require('sequelize');
 
 app.use(express.json());
 
@@ -14,10 +15,7 @@ const validateVideo = video => {
     brand: Joi.string()
       .min(1)
       .required(),
-    published: Joi.number()
-      .min(8)
-      .max(8)
-      .required(),
+    published: Joi.date().required(),
   };
   return Joi.validate(video, schema);
 };
@@ -31,11 +29,6 @@ const validateView = view => {
   };
   return Joi.validate(view, schema);
 };
-
-app.get('/api/videos', async (req, res, next) => {
-  const videos = await Video.findAll();
-  res.send(videos);
-});
 
 //Create video
 app.post('/api/videos', async (req, res, next) => {
@@ -58,11 +51,6 @@ app.post('/api/views', async (req, res, next) => {
     const { error } = validateView(req.body);
     if (error) return res.status(400).send(error.details[0].message);
 
-    req.body.date = new Date()
-      .toISOString()
-      .slice(0, 10)
-      .replace(/-/g, '');
-
     const newView = await View.create(req.body);
     if (!newView) return res.status(500).send('Server or DB error');
 
@@ -74,14 +62,29 @@ app.post('/api/views', async (req, res, next) => {
 
 //Get video report by id
 app.get('/api/videos/:id', async (req, res, next) => {
+  let count;
+  let id = req.params.id;
+  let date = req.query.date;
+  const Op = Sequelize.Op;
   try {
-    const video = await Video.findByPk(req.params.id);
+    const video = await Video.findByPk(id);
     if (!video)
       return res.status(404).send('The video with the given ID was not found');
 
-    const count = await View.count({ where: { videoID: req.params.id } });
-    if (!count)
-      return res.status(404).send('No views for the given videoID were found');
+    if (date) {
+      console.log(date.length)
+      if(date.length !== 10) return res.status(400).send('Date in wrong format')
+      count = await View.count({
+        where: { videoID: id, createdAt: { [Op.gte]: date },  },
+      });
+
+    } else {
+      count = await View.count({ where: { videoID: id } });
+      if (!count)
+        return res
+          .status(404)
+          .send('No views for the given videoID were found');
+    }
 
     const videoReport = {
       name: video.dataValues.name,
@@ -89,7 +92,6 @@ app.get('/api/videos/:id', async (req, res, next) => {
       published: video.dataValues.published,
       count: count,
     };
-    // video.dataValues.count = count;
 
     res.send({ message: 'Video report recieved.', videoReport });
   } catch (err) {

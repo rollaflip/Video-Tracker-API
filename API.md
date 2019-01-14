@@ -18,20 +18,18 @@ Required Parameters
 - brand: brand that owns this video. MUST be string
 - published: date the video is being published. Must be integer
 
-* The following format for 'published' is REQUIRED: yyyymmdd
-* Use this code to return a formatted date at time of creation:
-```
-new Date().toISOString().slice(0, 10).replace(/-/g, "")
-```
+* The following format for 'published' is REQUIRED: yyyy-MM-dd
+ie: 2019-01-13
+
 
 A post request for creating a new video returns the following format:
 {
     "message": "Video successfully created.",
     "newVideo": {
-        "id": 6,
-        "name": "Water Hydrates",
-        "brand": "This is Now",
-        "published": 20190113
+        "id": 4,
+        "name": "Dracula Cooks With Garlic",
+        "brand": "Thrillist",
+        "published": "2019-01-13"
     }
 }
 
@@ -43,23 +41,29 @@ A post request for a view returns the following format:
 {
     "message": "Video successfully tracked.",
     "newView": {
-        "id": 5,
+        "id": 10,
         "videoID": 3,
-        "date": 20190113
+        "updatedAt": "2019-01-13",
+        "createdAt": "2019-01-13"
     }
 }
 
 ## Get a report of video views:
 Required Parameters
 - id: ID of video requested. MUST be integer
+ie: http://localhost:3000/api/videos/1
+
+Optional query parameter
+- date. Limit views to those that occurred on or after this date
+ie: http://localhost:3000/api/videos/1?date=2018-01-13
 
 A get request for a video report returns the following format:
 {
     "message": "Video report received.",
     "videoReport": {
-        "name": "vid1",
+        "name": "Water Hydrates",
         "brand": "Thrillist",
-        "published": 2342,
+        "published": "2018-01-13",
         "count": 1
     }
 }
