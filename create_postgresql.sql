@@ -2,6 +2,8 @@ CREATE DATABASE VideoTracker;
 
 USE VideoTracker;
 
+CREATE SEQUENCE "Videos_id_seq";
+
 CREATE TABLE "Videos" (
     id integer DEFAULT nextval('"Videos_id_seq"'::regclass) PRIMARY KEY,
     name text NOT NULL,
@@ -9,11 +11,12 @@ CREATE TABLE "Videos" (
     published date NOT NULL
 );
 
-CREATE UNIQUE INDEX "Videos_pkey" ON "Videos"(id int4_ops);
-
+CREATE SEQUENCE "Views_id_seq";
 CREATE TABLE "Views" (
     id integer DEFAULT nextval('"Views_id_seq"'::regclass) PRIMARY KEY,
-    "VideoID" integer NOT NULL REFERENCES "Videos"(id)
+    "videoID" integer NOT NULL REFERENCES "Videos"(id) ON DELETE CASCADE,
+    "createdAt" date,
+    "updatedAt" date
 );
 
-CREATE UNIQUE INDEX "Views_pkey" ON "Views"(id int4_ops);
+
